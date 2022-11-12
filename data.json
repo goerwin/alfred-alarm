@@ -1,0 +1,79 @@
+{
+  "items": [
+    {
+      "id": 1668191481033,
+      "title": "Alarm",
+      "status": "completed",
+      "onRepeat": false,
+      "startDate": "2022-11-11T18:31:21.033Z",
+      "endDate": "2022-11-11T19:00:00.033Z",
+      "hrsMinsFormatted": "2:00PM",
+      "hours": 14,
+      "minutes": 0,
+      "pid": 70229,
+      "silencedAt": "2022-11-11T18:58:41.669Z"
+    },
+    {
+      "id": 1668189580646,
+      "title": "Alarm",
+      "status": "completed",
+      "onRepeat": false,
+      "startDate": "2022-11-11T17:59:40.646Z",
+      "endDate": "2022-11-11T18:02:00.646Z",
+      "hrsMinsFormatted": "1:02PM",
+      "hours": 13,
+      "minutes": 2,
+      "pid": 67119
+    },
+    {
+      "id": 1668185229470,
+      "title": "Alarm",
+      "status": "completed",
+      "onRepeat": false,
+      "startDate": "2022-11-11T16:47:09.470Z",
+      "endDate": "2022-11-11T20:00:00.470Z",
+      "hrsMinsFormatted": "3:00PM",
+      "hours": 15,
+      "minutes": 0,
+      "pid": 74212,
+      "silencedAt": "2022-11-11T19:58:23.603Z"
+    },
+    {
+      "id": 1668131185604,
+      "title": "Alarm",
+      "status": "active",
+      "onRepeat": true,
+      "startDate": "2022-11-11T01:46:25.604Z",
+      "endDate": "2022-11-11T01:50:00.604Z",
+      "hrsMinsFormatted": "8:50PM",
+      "hours": 20,
+      "minutes": 50,
+      "isoDays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        0
+      ],
+      "strDays": [
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat",
+        "Sun"
+      ],
+      "daysFormatted": "Mon, Tue, Wed, Thu, Fri, Sat, Sun",
+      "pid": 51707,
+      "silencedAt": "2022-11-11T01:48:45.642Z"
+    }
+  ],
+  "bgProcess": {
+    "pid": 51638,
+    "startDate": "2022-11-11T01:46:36.484Z",
+    "startDateFormatted": "Thu Nov 10 2022, 8:46:36 PM"
+  }
+}
