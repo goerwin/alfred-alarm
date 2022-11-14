@@ -112,6 +112,16 @@ describe('alarmAndTimerTrigger', () => {
         const res = getNextAlarmAndTimerItemState({ item, now });
         expect(res).toEqual({ ...item, status: 'missed' });
       });
+
+      it('should trigger alarm with a reminder of 1 minute', () => {
+        const now = new Date('2022-11-11T19:59:00.000Z');
+        const res = getNextAlarmAndTimerItemState({
+          item,
+          now,
+          reminderBeforeInMs: 60000,
+        });
+        expect(res).toEqual({ ...item, status: 'ringing' });
+      });
     });
 
     describe('Ringing alarms', () => {
@@ -122,7 +132,7 @@ describe('alarmAndTimerTrigger', () => {
       };
 
       it('should return same state if alarmProcess is running', () => {
-        const now = new Date('2022-11-11T20:03:00.000Z');
+        const now = new Date('2022-11-11T20:00:00.001Z');
         const res = getNextAlarmAndTimerItemState({
           item,
           now,
@@ -132,7 +142,7 @@ describe('alarmAndTimerTrigger', () => {
       });
 
       it('should set state to complete alarmProcess is not running', () => {
-        const now = new Date('2022-11-11T20:03:00.000Z');
+        const now = new Date('2022-11-11T20:00:00.001Z');
         const res = getNextAlarmAndTimerItemState({ item, now });
         expect(res).toEqual({ ...item, status: 'completed' });
       });
@@ -145,8 +155,8 @@ describe('alarmAndTimerTrigger', () => {
         endDate: '2022-11-11T20:00:00.000Z',
       };
 
-      it('should return same state', () => {
-        const now = new Date('2022-11-11T20:00:00.000Z');
+      it('should return same state if alarm completed', () => {
+        const now = new Date('2022-11-11T20:00:00.001Z');
         const res = getNextAlarmAndTimerItemState({ item, now });
         expect(res).toBe(item);
       });
@@ -155,14 +165,14 @@ describe('alarmAndTimerTrigger', () => {
     describe('Silenced alarms', () => {
       const item = {
         title: 'Alarm',
-        status: 'completed',
+        status: 'silenced',
         endDate: '2022-11-11T20:00:00.000Z',
       };
 
-      it('should return same state', () => {
+      it('should set state to completed', () => {
         const now = new Date('2022-11-11T20:00:00.000Z');
         const res = getNextAlarmAndTimerItemState({ item, now });
-        expect(res).toBe(item);
+        expect(res).toEqual({ ...item, status: 'completed' });
       });
     });
   });
@@ -220,7 +230,7 @@ describe('alarmAndTimerTrigger', () => {
       };
 
       it('should return same state if alarmProcess is running', () => {
-        const now = new Date('2022-11-11T20:03:00.000Z');
+        const now = new Date('2022-11-11T20:00:00.001Z');
         const res = getNextAlarmAndTimerItemState({
           item,
           now,
@@ -229,14 +239,41 @@ describe('alarmAndTimerTrigger', () => {
         expect(res).toBe(item);
       });
 
-      it('should set state to active if alarmProcess is not running and avoid triggering it again', () => {
-        const now = new Date('2022-11-11T20:03:00.000Z');
+      it('should set state to active if alarmProcess is not running and update to next endDate', () => {
+        const now = new Date('2022-11-11T20:00:00.001Z');
         const res = getNextAlarmAndTimerItemState({ item, now });
-        expect(res).toEqual({ ...item, status: 'active' });
+        expect(res).toEqual({
+          ...item,
+          status: 'active',
+          endDate: '2022-11-14T20:00:00.000Z',
+        });
+      });
+    });
 
-        // verify it returns the same so it doesn't trigger again
-        const res2 = getNextAlarmAndTimerItemState({ item: res, now });
-        expect(res2).toEqual(res2);
+    describe('Silenced alarms', () => {
+      const item = {
+        onRepeat: true,
+        title: 'Alarm',
+        status: 'silenced',
+        endDate: '2022-11-11T20:00:00.000Z',
+        isoDays: [1, 5],
+        hours: 15,
+        minutes: 0,
+      };
+
+      it('should set state to active and update to next endDate', () => {
+        const now = new Date('2022-11-11T20:00:00.001Z');
+        const res = getNextAlarmAndTimerItemState({
+          item,
+          now,
+          isAlarmProcessRunning: true,
+        });
+
+        expect(res).toEqual({
+          ...item,
+          status: 'active',
+          endDate: '2022-11-14T20:00:00.000Z',
+        });
       });
     });
 
@@ -257,4 +294,6 @@ describe('alarmAndTimerTrigger', () => {
       });
     });
   });
+
+  describe('Timer', () => {});
 });

@@ -600,11 +600,8 @@
 	<key>readme</key>
 	<string>Create alarms and timers
 
-* maxItems: max. number of alarms
 * nodePath: absolute path to node exec (eg. /usr/bin/node)
-* alarmFilePath: absolute path to the audio file for the alarm
-* dataFilePath: absolute path to file where alarm data is saved
-* alarmReminderInMins: Alarm reminder delay in minutes (default 0)</string>
+* dataFilePath: absolute path to file where alarm data is saved</string>
 	<key>uidata</key>
 	<dict>
 		<key>081D824C-741C-49F2-A5E2-13FF7C7BAB6E</key>
@@ -710,24 +707,15 @@
 	<array/>
 	<key>variables</key>
 	<dict>
-		<key>alarmFilePath</key>
-		<string>~/My Drive/Alfred/Alfred.alfredpreferences/workflows/user.workflow.BB989380-994D-4BE0-A548-403D629D08F7/resources/greatFairysFountainZeldaOOT.mp3</string>
-		<key>alarmReminderInMins</key>
-		<string>2</string>
 		<key>dataFilePath</key>
 		<string>~/My Drive/Alfred/Alfred.alfredpreferences/workflows/user.workflow.BB989380-994D-4BE0-A548-403D629D08F7/data.json</string>
-		<key>maxItems</key>
-		<string>50</string>
 		<key>nodePath</key>
 		<string>~/.nvm/versions/node/v16.6.1/bin/node</string>
 	</dict>
 	<key>variablesdontexport</key>
 	<array>
-		<string>nodePath</string>
-		<string>alarmFilePath</string>
 		<string>dataFilePath</string>
-		<string>alarmReminderInMins</string>
-		<string>maxItems</string>
+		<string>nodePath</string>
 	</array>
 	<key>version</key>
 	<string></string>

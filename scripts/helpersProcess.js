@@ -28,10 +28,10 @@ function isFamilyProcess(pid) {
   return envVars.match(/isAlfredAlarmProcess=([\w]*)/)?.[1] === 'true';
 }
 
-function triggerAlarm(title) {
+function triggerAlarm(title, alarmFilePath) {
   return childProcess.fork(
     path.resolve(__dirname, 'triggerAlarm.js'),
-    { env: { ...process.env, title } }
+    { env: { ...process.env, title, alarmFilePath } }
   );
 }
 

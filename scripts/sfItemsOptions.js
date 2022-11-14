@@ -1,7 +1,6 @@
 const {
   getData,
   startBgProcess,
-  getDateToNextAlarm,
   cancelOrRestartOrSilenceAlarm,
   deleteAlarm,
 } = require('./helpers');
@@ -57,15 +56,14 @@ function logItems(uidPrefix) {
             }`;
           }
 
+          subtitle = `${statusTxt}`;
+
           if (status === 'ringing') {
             title = `${title} - 🔔 - ${el.title}`;
-            subtitle = `${statusTxt} - Press Enter to silence`;
+            subtitle += ` - Press Enter to silence`;
           } else if (status === 'active') {
             const now = new Date();
-            const { isoDays, hours, minutes } = el;
-            endDate = isoDays
-              ? getDateToNextAlarm(now, hours, minutes, isoDays)
-              : new Date(el.endDate);
+            endDate = new Date(el.endDate);
             const elTimeDiff = timeDiffByDates(now, endDate);
             const endDateFormatted =
               endDate.toDateString() + ', ' + endDate.toLocaleTimeString();
@@ -73,13 +71,13 @@ function logItems(uidPrefix) {
             const elTimeDiffStr = endDate - now > 0 ? `⏳ ${elTimeDiff}` : '⏳';
 
             title = `${title} - ${elTimeDiffStr} - ${el.title}`;
-            subtitle = `${statusTxt} - ${endDateFormatted} - Press Enter to cancel`;
+            subtitle += ` - ${endDateFormatted} - Press Enter to cancel`;
           } else if (status === 'completed' || status === 'missed') {
             endDate = new Date(el.endDate);
             const endDateFormatted =
               endDate.toDateString() + ', ' + endDate.toLocaleTimeString();
             title = `${title} - ${el.title}`;
-            subtitle = `${statusTxt} - ${endDateFormatted} - Press Enter to restart`;
+            subtitle += ` - ${endDateFormatted} - Press Enter to restart`;
             icon = { path: 'resources/icon-gray.png' };
           }
 

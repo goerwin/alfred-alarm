@@ -8,16 +8,14 @@ const {
 } = require('./helpers');
 const helpersProcess = require('./helpersProcess');
 
-const ALARM_REMINDER_DELAY_IN_MINS =
-  Number(process.env.alarmReminderInMins) || 0;
-
-const ALARM_REMINDER_DELAY_IN_MS = ALARM_REMINDER_DELAY_IN_MINS * 60 * 1000;
-
 (async () => {
   while (true) {
     const data = getData();
     const now = new Date();
     let updateData = false;
+
+    const ALARM_REMINDER_DELAY_IN_MINS = data.alarmReminderInMins || 0;
+    const ALARM_REMINDER_DELAY_IN_MS = ALARM_REMINDER_DELAY_IN_MINS * 60 * 1000;
 
     const items = data.items.map((item) => {
       const isAlarmProcessRunning = helpersProcess.isFamilyProcess(item.pid);
@@ -30,9 +28,12 @@ const ALARM_REMINDER_DELAY_IN_MS = ALARM_REMINDER_DELAY_IN_MINS * 60 * 1000;
 
       if (!updateData && item !== newItem) updateData = true;
 
-      if (isAlarmProcessRunning && newItem.status === 'ringing') {
+      if (!isAlarmProcessRunning && newItem.status === 'ringing') {
         updateData = true;
-        const childProcessEl = helpersProcess.triggerAlarm(item.title);
+        const childProcessEl = helpersProcess.triggerAlarm(
+          item.title,
+          data.alarmFilePath
+        );
         newItem.pid = childProcessEl.pid;
       }
 

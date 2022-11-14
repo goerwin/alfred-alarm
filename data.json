@@ -1,79 +1,56 @@
 {
+  "alarmReminderInMins": 1,
+  "maxItems": 50,
+  "alarmFilePath": "~/My Drive/Alfred/Alfred.alfredpreferences/workflows/user.workflow.BB989380-994D-4BE0-A548-403D629D08F7/resources/greatFairysFountainZeldaOOT.mp3",
   "items": [
     {
-      "id": 1668191481033,
-      "title": "Alarm",
-      "status": "completed",
-      "onRepeat": false,
-      "startDate": "2022-11-11T18:31:21.033Z",
-      "endDate": "2022-11-11T19:00:00.033Z",
+      "id": 1668447289396,
+      "title": "Convera Globant",
+      "status": "active",
+      "onRepeat": true,
+      "startDate": "2022-11-14T17:34:49.396Z",
+      "endDate": "2022-11-15T16:00:00.000Z",
+      "hrsMinsFormatted": "11:00AM",
+      "hours": 11,
+      "minutes": 0,
+      "isoDays": [
+        2
+      ],
+      "strDays": [
+        "Tue"
+      ],
+      "daysFormatted": "Tue"
+    },
+    {
+      "id": 1668447268650,
+      "title": "Convera daily",
+      "status": "active",
+      "onRepeat": true,
+      "startDate": "2022-11-14T17:34:28.650Z",
+      "endDate": "2022-11-14T19:00:00.000Z",
       "hrsMinsFormatted": "2:00PM",
       "hours": 14,
       "minutes": 0,
-      "pid": 70229,
-      "silencedAt": "2022-11-11T18:58:41.669Z"
-    },
-    {
-      "id": 1668189580646,
-      "title": "Alarm",
-      "status": "completed",
-      "onRepeat": false,
-      "startDate": "2022-11-11T17:59:40.646Z",
-      "endDate": "2022-11-11T18:02:00.646Z",
-      "hrsMinsFormatted": "1:02PM",
-      "hours": 13,
-      "minutes": 2,
-      "pid": 67119
-    },
-    {
-      "id": 1668185229470,
-      "title": "Alarm",
-      "status": "completed",
-      "onRepeat": false,
-      "startDate": "2022-11-11T16:47:09.470Z",
-      "endDate": "2022-11-11T20:00:00.470Z",
-      "hrsMinsFormatted": "3:00PM",
-      "hours": 15,
-      "minutes": 0,
-      "pid": 74212,
-      "silencedAt": "2022-11-11T19:58:23.603Z"
-    },
-    {
-      "id": 1668131185604,
-      "title": "Alarm",
-      "status": "active",
-      "onRepeat": true,
-      "startDate": "2022-11-11T01:46:25.604Z",
-      "endDate": "2022-11-11T01:50:00.604Z",
-      "hrsMinsFormatted": "8:50PM",
-      "hours": 20,
-      "minutes": 50,
       "isoDays": [
         1,
         2,
         3,
         4,
-        5,
-        6,
-        0
+        5
       ],
       "strDays": [
         "Mon",
         "Tue",
         "Wed",
         "Thu",
-        "Fri",
-        "Sat",
-        "Sun"
+        "Fri"
       ],
-      "daysFormatted": "Mon, Tue, Wed, Thu, Fri, Sat, Sun",
-      "pid": 51707,
-      "silencedAt": "2022-11-11T01:48:45.642Z"
+      "daysFormatted": "Mon, Tue, Wed, Thu, Fri"
     }
   ],
   "bgProcess": {
-    "pid": 51638,
-    "startDate": "2022-11-11T01:46:36.484Z",
-    "startDateFormatted": "Thu Nov 10 2022, 8:46:36 PM"
+    "pid": 60053,
+    "startDate": "2022-11-14T17:50:43.596Z",
+    "startDateFormatted": "Mon Nov 14 2022, 12:50:43 PM"
   }
 }

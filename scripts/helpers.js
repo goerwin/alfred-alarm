@@ -3,8 +3,6 @@ const path = require('path');
 const fs = require('fs-extra');
 const helpersProcess = require('./helpersProcess');
 
-const MAX_ITEMS = process.env.maxItems || 50;
-
 function getDataPath() {
   if (!process.env.dataFilePath)
     throw new Error('environment variable "dataFilePath" not defined');
@@ -77,6 +75,7 @@ function sleep(seconds) {
 
 function createAlarm(attrs) {
   const data = getData();
+  const MAX_ITEMS = data.maxItems || 50;
 
   if (data.items.length >= MAX_ITEMS)
     return helpersProcess.showNotification(
@@ -88,9 +87,13 @@ function createAlarm(attrs) {
   const now = new Date();
 
   let endDate = new Date();
+
   endDate.setHours(hours);
   endDate.setMinutes(minutes);
   endDate.setSeconds(0);
+  endDate.setMilliseconds(0);
+
+  if (onRepeat) endDate = getDateToNextAlarm(now, hours, minutes, isoDays);
 
   if (type === 'timer')
     endDate = new Date(now.valueOf() + Number(minutesTimer) * 60 * 1000);
@@ -135,7 +138,7 @@ function silenceAlarm(id) {
   setData({
     ...data,
     items: data.items.map((el) =>
-      el.id !== id ? el : { ...el, status: 'completed' }
+      el.id !== id ? el : { ...el, status: 'silenced' }
     ),
   });
 }
@@ -262,22 +265,37 @@ function getNextAlarmAndTimerItemState({
 }) {
   const ALARM_TOLERANCE = 60000;
   const { status, hours, minutes, isoDays, onRepeat, type } = item;
+  const isAlarm = !type || type === 'alarm';
   const endDate = onRepeat
     ? getDateToNextAlarm(item.endDate, hours, minutes, isoDays)
     : new Date(item.endDate);
 
+  if (
+    isAlarm &&
+    onRepeat &&
+    (status === 'silenced' || (status === 'ringing' && !isAlarmProcessRunning))
+  )
+    return {
+      ...item,
+      status: 'active',
+      endDate: getDateToNextAlarm(
+        new Date(new Date(item.endDate).getTime() + 1),
+        hours,
+        minutes,
+        isoDays
+      ).toISOString(),
+    };
+
   let msToAlarm = endDate - now;
 
-  // TODO: alarm completed and onRepeat
-
   // to trigger alarm with a delay set on reminder
-  if (!type || type === 'alarm') msToAlarm = msToAlarm - reminderBeforeInMs;
+  if (isAlarm) msToAlarm = msToAlarm - reminderBeforeInMs;
 
   if (status === 'ringing' && isAlarmProcessRunning) return item;
 
-  // ringing alarm finished completely
-  if (status === 'ringing' && !isAlarmProcessRunning)
-    return { ...item, status: onRepeat ? 'active' : 'completed' };
+  // ringing alarm silenced/finished completely
+  if (status === 'silenced' || (status === 'ringing' && !isAlarmProcessRunning))
+    return { ...item, status: 'completed' };
 
   // alarm date not reached
   if (msToAlarm > 0) return item;
