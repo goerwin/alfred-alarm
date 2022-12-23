@@ -22,7 +22,7 @@ function getNewAlarmItem(processArgv) {
   if (!hoursMinsInfo)
     return {
       valid: false,
-      title: 'Oops!',
+      title: 'Ups!',
       subtitle:
         'Invalid syntax! (egs. "425pm" or "1625 walk dog" or "2pm 34 this will repeat on wed/thu")',
     };
@@ -46,18 +46,6 @@ function getNewAlarmItem(processArgv) {
   return {
     variables: {
       action: 'create',
-      // notificationTitle: 'Alarm created!',
-      // notificationMsg: `Alarm will fire at ${hrsMinsFormatted}`,
-
-      // title: alarmWeekDays ? title : days,
-      // onRepeat: !!alarmWeekDays,
-      // isoDays: alarmWeekDays?.isoDays,
-      // strDays: alarmWeekDays?.strDays,
-
-      // title: `New Alarm - ${hrsMinsFormatted} ${weekDaysFormatted}`,
-      // subtitle: `"${newTitle}" at ${hrsMinsFormatted}`,
-      // arg: `${hrsMinsFormatted} ${hours} ${minutes} ${days} ${newTitle}`,
-
       item: JSON.stringify({
         title: newTitle,
         hours,
@@ -67,12 +55,6 @@ function getNewAlarmItem(processArgv) {
         strDays: alarmWeekDays?.strDays,
         hrsMinsFormatted,
       }),
-
-      // hrsMinsFormatted,
-      // alarmWeekDays,
-      // days,
-      // minutes,
-      // hours,
     },
 
     title: `New Alarm - ${hrsMinsFormatted} ${weekDaysFormatted}`,
@@ -105,12 +87,13 @@ function getItems(uidPrefix) {
         match = `${title} ${el.title}`;
       } else {
         const strMins = String(minutes).padStart(2, '0');
-        match = `Alarm: ${hrsMinsFormatted} ${hrsMinsFormatted.replace(
-          /[:]/g,
+        const m1 = `${hrsMinsFormatted} ${hrsMinsFormatted.replace(/:/g, '')}`;
+        const m2 = `${hrsMinsFormatted} ${hrsMinsFormatted.replace(
+          /:00/g,
           ''
-        )} ${hours}:${strMins} ${hours}${strMins} ${daysFormattedStr} ${
-          el.title
-        }`;
+        )}`;
+
+        match = `Alarm: ${m1} ${m2} ${hours}:${strMins} ${hours}${strMins} ${daysFormattedStr} ${el.title}`;
       }
 
       subtitle = `${statusTxt}`;
@@ -173,8 +156,9 @@ function getItems(uidPrefix) {
 
       return a.status === b.status ? 0 : a.status < b.status ? -1 : 1;
     })
-    .filter((item) =>
-      item.match.toLowerCase().includes(userInput.toLowerCase())
+    .filter(
+      // (item) => fuzzySearch(item.match, userInput)
+      (item) => item.match.toLowerCase().includes(userInput.toLowerCase())
     );
 
   newItems.push(getNewAlarmItem(process.argv));
@@ -191,8 +175,6 @@ const itemId = Number(process.env.itemId);
 
 if (action === 'create') {
   const item = process.env.item;
-
-  console.error('kekw', { item: JSON.parse(item) });
   createAlarm({ ...JSON.parse(item) });
 }
 
