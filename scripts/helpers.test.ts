@@ -1,10 +1,10 @@
-// import { describe, test, expect } from '@jest/globals';
-
 import {
   getAlarmWeekDays,
   getNextAlarmDate,
   getNextDayOfWeekDate,
-} from './helpers';
+  getNextStateItem,
+} from './helperstssssss';
+import { DataItem } from './schemas';
 
 it(`${getAlarmWeekDays.name} should work`, () => {
   (
@@ -78,4 +78,63 @@ it(`${getNextAlarmDate.name} should work`, () => {
       })
     ).toEqual(new Date(el[4]))
   );
+});
+
+describe(`${getNextStateItem.name}`, () => {
+  describe('active alarm', () => {
+    const item: DataItem = {
+      type: 'alarmOneTime',
+      createdAt: '1999-11-20T00:00:00.000Z',
+      hours: 7,
+      minutes: 0,
+      id: '1',
+      status: 'active',
+      title: '',
+    };
+
+    it('should return same item with object equality', () => {
+      (
+        [
+          // now, alarmToleranceInMs, reminderBeforeInMs
+          ['2022-11-20T06:59:59.999Z', 0, 0],
+          ['2022-11-20T07:00:00.001Z', 0, 0],
+          ['2022-11-20T06:59:59.999Z', 60000, 0],
+          ['2022-11-20T07:01:00.001Z', 60000, 0],
+        ] as const
+      ).forEach((el) =>
+        expect(
+          getNextStateItem(item, el[0], {
+            alarmToleranceInMs: el[1],
+            reminderBeforeInMs: el[2],
+          })
+        ).toBe(item)
+      );
+    });
+
+    it('should return item with expected status', () => {
+      (
+        [
+          // now, alarmToleranceInMs, reminderBeforeInMs, expectedStatus
+          ['2022-11-20T06:59:59.999Z', 0, 0, 'active'],
+          ['2022-11-20T07:00:00.000Z', 0, 0, 'ringing'],
+          ['2022-11-20T07:00:00.001Z', 0, 0, 'active'],
+          ['2022-11-20T06:59:59.999Z', 60000, 0, 'active'],
+          ['2022-11-20T07:00:00.000Z', 60000, 0, 'ringing'],
+          ['2022-11-20T07:01:00.000Z', 60000, 0, 'ringing'],
+          ['2022-11-20T07:01:00.001Z', 60000, 0, 'active'],
+          ['2022-11-20T06:59:29.999Z', 60000, 30000, 'active'],
+          ['2022-11-20T06:59:30.000Z', 60000, 30000, 'ringing'],
+          ['2022-11-20T07:00:30.000Z', 60000, 30000, 'ringing'],
+          ['2022-11-20T07:00:30.001Z', 60000, 30000, 'active'],
+        ] as const
+      ).forEach((el) =>
+        expect(
+          getNextStateItem(item, el[0], {
+            alarmToleranceInMs: el[1],
+            reminderBeforeInMs: el[2],
+          })
+        ).toEqual({ ...item, status: el[3] })
+      );
+    });
+  });
 });

@@ -3,7 +3,7 @@ import { z } from 'zod';
 const CommonDataItemSchema = z.object({
   id: z.string().uuid(),
   title: z.string(),
-  createdAt: z.date(),
+  createdAt: z.string().datetime(),
   pid: z.number().optional(),
 });
 
