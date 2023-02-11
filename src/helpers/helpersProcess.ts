@@ -1,7 +1,7 @@
 import shell from 'shelljs';
 import path from 'path';
 import childProcess from 'child_process';
-import { getData, setData } from './helperstssssss';
+import { getData, setData } from './general';
 
 export function showNotification(message: string, title = 'Alarm') {
   shell.exec(
@@ -73,7 +73,7 @@ export function startBgProcess() {
 
   setData({
     ...getData(),
-    bgProcess: { pid: indProcess.pid, startDate: new Date() },
+    bgProcess: { pid: indProcess.pid, createdAt: new Date().toISOString() },
   });
 }
 

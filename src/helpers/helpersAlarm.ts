@@ -1,8 +1,9 @@
+import crypto from 'crypto';
 import * as helpersProcess from './helpersProcess';
-import { getData, setData } from './helperstssssss';
-import { DataItem, NewAlarmOrTimerAttrs } from './schemas';
+import { getData, setData } from './general';
+import { DataItem, NewAlarmOrTimerAttrsSchema } from './schemas';
 
-export function createAlarmOrTimer(attrs: NewAlarmOrTimerAttrs) {
+export function createAlarmOrTimer(attrs: unknown) {
   const data = getData();
   const MAX_ITEMS = data.maxItems || 50;
 
@@ -12,14 +13,15 @@ export function createAlarmOrTimer(attrs: NewAlarmOrTimerAttrs) {
     throw new Error(errorMsg);
   }
 
+  const parsedAttrs = NewAlarmOrTimerAttrsSchema.parse(attrs);
   const id = crypto.randomUUID();
   const now = new Date();
-  const title = attrs.title.trim();
+  const title = parsedAttrs.title.trim();
   const newItem: DataItem = {
-    ...attrs,
+    ...parsedAttrs,
     id,
     title,
-    createdAt: now,
+    createdAt: now.toISOString(),
     status: 'active',
   };
 
@@ -36,14 +38,11 @@ function silenceAlarm(id: string) {
   if (status !== 'ringing') return;
   if (!pid) return;
 
-  if (helpersProcess.isFamilyProcess(pid))
-    helpersProcess.killProcessesWithPPIDEqualToPID(pid);
+  if (helpersProcess.isFamilyProcess(pid)) helpersProcess.killProcessesWithPPIDEqualToPID(pid);
 
   setData({
     ...data,
-    items: data.items.map((el) =>
-      el.id !== id ? el : { ...el, status: 'silenced' }
-    ),
+    items: data.items.map((el) => (el.id !== id ? el : { ...el, status: 'silenced' })),
   });
 }
 
@@ -61,9 +60,7 @@ export function cancelAlarm(id: string) {
 
   setData({
     ...data,
-    items: data.items.map((el) =>
-      el.id !== id ? el : { ...el, status: 'inactive' }
-    ),
+    items: data.items.map((el) => (el.id !== id ? el : { ...el, status: 'inactive' })),
   });
 }
 

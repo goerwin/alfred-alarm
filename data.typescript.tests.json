@@ -1,0 +1,84 @@
+{
+  "alarmReminderInMins": 1,
+  "maxItems": 50,
+  "alarmFilePath": "~/My Drive/Alfred/Alfred.alfredpreferences/workflows/user.workflow.BB989380-994D-4BE0-A548-403D629D08F7/resources/greatFairysFountainZeldaOOT.mp3",
+  "items": [
+    {
+      "id": "8dfdd430-6950-43ef-8a21-ea07b0495a26",
+      "title": "Alarm",
+      "createdAt": "2023-02-11T07:20:32.782Z",
+      "type": "alarmOneTime",
+      "status": "inactive",
+      "hours": 20,
+      "minutes": 0
+    },
+    {
+      "id": "5e49d8ae-d524-4892-bc7f-232f07ec8dd2",
+      "title": "Convera daily",
+      "createdAt": "2023-02-06T17:04:24.569Z",
+      "type": "alarmRepeat",
+      "status": "active",
+      "hours": 19,
+      "minutes": 0,
+      "isoWeekDays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    },
+    {
+      "id": "5e49d8ae-d524-4892-bc7f-232f07ec8dd2",
+      "title": "Convera daily",
+      "createdAt": "2023-02-06T17:04:24.569Z",
+      "type": "alarmRepeat",
+      "status": "ringing",
+      "hours": 19,
+      "minutes": 0,
+      "isoWeekDays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    },
+    {
+      "id": "5e49d8ae-d524-4892-bc7f-232f07ec8dd3",
+      "title": "llorelo ombre",
+      "createdAt": "2023-02-11T04:34:50.529Z",
+      "type": "timer",
+      "status": "active",
+      "minutes": 4550
+    },
+    {
+      "id": "5e49d8ae-d524-4892-bc7f-232f07ec8dd3",
+      "title": "llorelo ombre",
+      "createdAt": "2023-02-11T04:34:50.529Z",
+      "type": "timer",
+      "status": "inactive",
+      "minutes": 4550
+    },
+    {
+      "id": "5e49d8ae-d524-4892-bc7f-232f07ec8dd3",
+      "title": "llorelo ombre",
+      "createdAt": "2023-02-11T04:34:50.529Z",
+      "type": "timer",
+      "status": "ringing",
+      "minutes": 4550
+    },
+    {
+      "id": "5e49d8ae-d524-4892-bc7f-232f07ec8dd3",
+      "title": "llorelo ombre",
+      "createdAt": "2023-02-11T04:34:50.529Z",
+      "type": "timer",
+      "status": "missed",
+      "minutes": 4550
+    }
+  ],
+  "bgProcess": {
+    "pid": 5988,
+    "createdAt": "2023-02-07T18:59:28.998Z"
+  }
+}

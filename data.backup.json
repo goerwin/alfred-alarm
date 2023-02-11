@@ -4,90 +4,6 @@
   "alarmFilePath": "~/My Drive/Alfred/Alfred.alfredpreferences/workflows/user.workflow.BB989380-994D-4BE0-A548-403D629D08F7/resources/greatFairysFountainZeldaOOT.mp3",
   "items": [
     {
-      "id": 1676101610772,
-      "title": "y al diego",
-      "status": "active",
-      "type": "timer",
-      "startDate": "2023-02-11T07:46:50.772Z",
-      "endDate": "2023-02-11T11:06:50.772Z",
-      "hrsMinsFormatted": "200 minutes",
-      "minutesTimer": 200
-    },
-    {
-      "id": 1676101573372,
-      "title": "y al diego",
-      "status": "active",
-      "type": "timer",
-      "startDate": "2023-02-11T07:46:13.372Z",
-      "endDate": "2023-02-11T11:06:13.372Z",
-      "hrsMinsFormatted": "200 minutes",
-      "minutesTimer": 200
-    },
-    {
-      "id": 1676100068075,
-      "title": "Timer",
-      "status": "active",
-      "type": "timer",
-      "startDate": "2023-02-11T07:21:08.075Z",
-      "endDate": "2023-02-11T12:21:08.075Z",
-      "hrsMinsFormatted": "300 minutes",
-      "minutesTimer": 300
-    },
-    {
-      "id": 1676099631734,
-      "title": "Alarm",
-      "status": "active",
-      "onRepeat": false,
-      "startDate": "2023-02-11T07:13:51.734Z",
-      "endDate": "2023-02-11T20:00:00.000Z",
-      "hrsMinsFormatted": "3:00PM",
-      "hours": 15,
-      "minutes": 0
-    },
-    {
-      "id": 1676099629281,
-      "title": "alala",
-      "status": "active",
-      "onRepeat": false,
-      "startDate": "2023-02-11T07:13:49.281Z",
-      "endDate": "2023-02-11T20:00:00.000Z",
-      "hrsMinsFormatted": "3:00PM",
-      "hours": 15,
-      "minutes": 0
-    },
-    {
-      "id": 1676099499014,
-      "title": "Alarm",
-      "status": "completed",
-      "onRepeat": false,
-      "startDate": "2023-02-11T07:11:39.014Z",
-      "endDate": "2023-02-11T15:30:00.000Z",
-      "hrsMinsFormatted": "10:30AM",
-      "hours": 10,
-      "minutes": 30
-    },
-    {
-      "id": 1676094731233,
-      "title": "another one",
-      "status": "completed",
-      "type": "timer",
-      "startDate": "2023-02-11T05:52:11.233Z",
-      "endDate": "2023-02-12T18:54:11.233Z",
-      "hrsMinsFormatted": "2222 minutes",
-      "minutesTimer": 2222
-    },
-    {
-      "id": 1676093509162,
-      "title": "Alarm",
-      "status": "completed",
-      "onRepeat": false,
-      "startDate": "2023-02-11T05:31:49.162Z",
-      "endDate": "2023-02-11T15:00:00.000Z",
-      "hrsMinsFormatted": "10:00AM",
-      "hours": 10,
-      "minutes": 0
-    },
-    {
       "id": 1676090090529,
       "title": "llorelo ombre",
       "status": "active",
@@ -120,6 +36,18 @@
       "hours": 16,
       "minutes": 0,
       "pid": 56410
+    },
+    {
+      "id": 1675709977697,
+      "title": "Alarm",
+      "status": "completed",
+      "onRepeat": false,
+      "startDate": "2023-02-06T18:59:37.697Z",
+      "endDate": "2023-02-06T20:00:00.000Z",
+      "hrsMinsFormatted": "3:00PM",
+      "hours": 15,
+      "minutes": 0,
+      "pid": 84070
     },
     {
       "id": 1675703064569,
@@ -171,6 +99,17 @@
       "hours": 11,
       "minutes": 0,
       "pid": 12744
+    },
+    {
+      "id": 1675101702513,
+      "title": "Alarm",
+      "status": "missed",
+      "onRepeat": false,
+      "startDate": "2023-01-30T18:01:42.513Z",
+      "endDate": "2023-01-31T15:00:00.000Z",
+      "hrsMinsFormatted": "10:00AM",
+      "hours": 10,
+      "minutes": 0
     },
     {
       "id": 1674837908396,
@@ -261,6 +200,18 @@
       ],
       "daysFormatted": "Tue",
       "pid": 14813
+    },
+    {
+      "id": 1671550062724,
+      "title": "Alarm",
+      "status": "completed",
+      "onRepeat": false,
+      "startDate": "2022-12-20T15:27:42.724Z",
+      "endDate": "2022-12-20T15:30:00.000Z",
+      "hrsMinsFormatted": "10:30AM",
+      "hours": 10,
+      "minutes": 30,
+      "pid": 6601
     },
     {
       "id": 1671484740729,

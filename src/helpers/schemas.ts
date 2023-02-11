@@ -1,19 +1,13 @@
 import { z } from 'zod';
 
 const CommonDataItemSchema = z.object({
-  id: z.string().uuid(),
+  id: z.string(),
   title: z.string(),
   createdAt: z.string().datetime(),
   pid: z.number().optional(),
 });
 
-const statusesSchema = z.enum([
-  'active',
-  'inactive',
-  'ringing',
-  'silenced',
-  'missed',
-]);
+const statusesSchema = z.enum(['active', 'inactive', 'ringing', 'silenced', 'missed']);
 
 const hoursSchema = z.number().min(0).max(23);
 const minutesSchema = z.number().min(0).max(59);
@@ -34,7 +28,7 @@ const AlarmOneTimeSchema = CommonDataItemSchema.extend({
 const AlarmRepeatSchema = AlarmOneTimeSchema.extend({
   type: z.literal('alarmRepeat'),
   status: statusesSchema.exclude(['missed']),
-  isoDays: z.array(z.number().min(0).max(6)).nonempty(),
+  isoWeekDays: z.array(z.number().min(0).max(6)).nonempty(),
   hours: hoursSchema,
   minutes: minutesSchema,
 });
@@ -44,7 +38,7 @@ export const DataSchema = z.object({
   maxItems: z.number().optional(),
   alarmFilePath: z.string().optional(),
   items: z.array(z.union([TimerSchema, AlarmOneTimeSchema, AlarmRepeatSchema])),
-  bgProcess: z.object({ pid: z.number(), startDate: z.date() }).optional(),
+  bgProcess: z.object({ pid: z.number(), createdAt: z.string().datetime() }).optional(),
 });
 
 const ommitedKeysForNewAlarmOrTimer = {
@@ -53,15 +47,23 @@ const ommitedKeysForNewAlarmOrTimer = {
   pid: true,
 } as const;
 
-const NewAlarmOrTimerAttrsSchema = z.discriminatedUnion('type', [
+export const NewAlarmOrTimerAttrsSchema = z.discriminatedUnion('type', [
   AlarmOneTimeSchema.omit(ommitedKeysForNewAlarmOrTimer),
   AlarmRepeatSchema.omit(ommitedKeysForNewAlarmOrTimer),
   TimerSchema.omit(ommitedKeysForNewAlarmOrTimer),
 ]);
 
 export type Data = z.infer<typeof DataSchema>;
-type AlarmOneTime = z.infer<typeof AlarmOneTimeSchema>;
-type AlarmRepeat = z.infer<typeof AlarmRepeatSchema>;
-type Timer = z.infer<typeof TimerSchema>;
-export type DataItem = Data['items'][number];
 export type NewAlarmOrTimerAttrs = z.infer<typeof NewAlarmOrTimerAttrsSchema>;
+export type DataItem = Data['items'][number];
+
+export type AlfredItem = {
+  title: string;
+  valid?: boolean;
+  subtitle?: string;
+  mods?: { [key: string]: any };
+  match?: string;
+  icon?: { path: string };
+  variables?: { [key: string]: any };
+  arg?: string;
+};

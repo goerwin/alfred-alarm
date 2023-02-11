@@ -1,13 +1,19 @@
 import fs from 'fs-extra';
 import path from 'path';
-import { Data, DataItem, DataSchema } from './schemas';
+import { AlfredItem, Data, DataItem, DataSchema } from './schemas';
 
 function getDataPath() {
-  if (!process.env.dataFilePath)
-    throw new Error('environment variable "dataFilePath" not defined');
+  if (!process.env.dataFilePath) throw new Error('environment variable "dataFilePath" not defined');
 
   const home = process.env['HOME'] || '';
-  return path.resolve(process.env.dataFilePath.replace(/^~/, home));
+  // return path.resolve(process.env.dataFilePath.replace(/^~/, home));
+  // TODO:
+  return path.resolve(
+    '~/My Drive/Alfred/Alfred.alfredpreferences/workflows/user.workflow.BB989380-994D-4BE0-A548-403D629D08F7/data.typescript.tests.json'.replace(
+      /^~/,
+      home
+    )
+  );
 }
 
 export function getData() {
@@ -17,21 +23,20 @@ export function getData() {
 }
 
 export function setData(newData: Data) {
-  fs.writeFileSync(
-    getDataPath(),
-    JSON.stringify(DataSchema.parse(newData), null, 2),
-    { encoding: 'utf8' }
-  );
+  fs.writeFileSync(getDataPath(), JSON.stringify(DataSchema.parse(newData), null, 2), {
+    encoding: 'utf8',
+  });
 }
 
 export function sleep(ms: number) {
   return new Promise((res) => setTimeout(res, ms));
 }
 
-// TODO: () => console.log(JSON.stringify(...))
-export function outputItems(items: any[]) {
+export function outputAlfredItems(items: AlfredItem[], additionals: Record<string, any> = {}) {
   console.log(
     JSON.stringify({
+      ...additionals,
+
       items,
     })
   );
@@ -41,11 +46,11 @@ export function outputItems(items: any[]) {
 representing the days of the week: 1 for monday, 2 for tuesday... 7 sunday
 example: 12345 for all weekdays, 67 for weekends */
 export function getAlarmWeekDays(str: string) {
-  if (!str || str.length > 7) return null;
+  if (!str || str.length > 7 || str.length < 1) return null;
 
   const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-  const strIsoWeekDays = [];
-  const isoWeekDays = [];
+  const strIsoWeekDays: [string, ...string[]] = [''];
+  const isoWeekDays: [number, ...number[]] = [0];
 
   let lastDay = 0;
   for (let idx = 0; idx < str.length; idx++) {
@@ -58,6 +63,9 @@ export function getAlarmWeekDays(str: string) {
     isoWeekDays.push(number % 7);
   }
 
+  // TODO: needed in order to create the non empty array type
+  isoWeekDays.shift();
+  strIsoWeekDays.shift();
   return { isoWeekDays, strIsoWeekDays };
 }
 
@@ -82,7 +90,7 @@ export function getNextDayOfWeekDate(attrs: {
   return nextDate;
 }
 
-export function getNextAlarmDate(attrs: {
+export function getNextTriggerDate(attrs: {
   now: Date | string;
   hours: number;
   minutes: number;
@@ -90,16 +98,16 @@ export function getNextAlarmDate(attrs: {
 }) {
   const { hours, minutes, isoWeekDays } = attrs;
   const now = new Date(attrs.now);
-  const alarmDate = new Date(now);
-  alarmDate.setUTCHours(hours);
-  alarmDate.setUTCMinutes(minutes);
-  alarmDate.setUTCSeconds(0);
-  alarmDate.setUTCMilliseconds(0);
+  const triggerDate = new Date(now);
+  triggerDate.setUTCHours(hours);
+  triggerDate.setUTCMinutes(minutes);
+  triggerDate.setUTCSeconds(0);
+  triggerDate.setUTCMilliseconds(0);
 
   if (!isoWeekDays) {
-    const timeDiff = alarmDate.valueOf() - now.valueOf();
-    if (timeDiff < 0) alarmDate.setDate(alarmDate.getDate() + 1);
-    return alarmDate;
+    const timeDiff = triggerDate.valueOf() - now.valueOf();
+    if (timeDiff < 0) triggerDate.setDate(triggerDate.getDate() + 1);
+    return triggerDate;
   }
 
   return isoWeekDays.reduce((prev, dayOfWeek) => {
@@ -116,29 +124,27 @@ export function getNextStateItem(
 ): DataItem {
   const { alarmToleranceInMs = 60000, reminderBeforeInMs = 0 } = options || {};
   const parsedNow = new Date(now);
-  const nowInMs = parsedNow.valueOf()
+  const nowInMs = parsedNow.valueOf();
 
-  if (item.type === 'alarmOneTime') {
-    const alarmDate = getNextAlarmDate({
-      now: new Date(nowInMs - alarmToleranceInMs),
-      hours: item.hours,
-      minutes: item.minutes,
-    });
+  if (item.type === 'timer') return item;
 
-    const timeDiff = alarmDate.valueOf() - nowInMs - reminderBeforeInMs;
-    const isInTriggerTime = timeDiff <= 0 && timeDiff >= -alarmToleranceInMs;
-    console.log('bb', timeDiff, parsedNow, alarmDate);
+  const triggerDate = getNextTriggerDate({
+    now: new Date(nowInMs - alarmToleranceInMs),
+    hours: item.hours,
+    minutes: item.minutes,
+    isoWeekDays: item.type === 'alarmRepeat' ? item.isoWeekDays : undefined,
+  });
 
-    if (item.status === 'missed') {
-      if (isInTriggerTime) return { ...item, status: 'active' };
-    } else if (item.status === 'ringing') {
-      if (!isInTriggerTime) return { ...item, status: 'inactive' };
-    } else if (item.status === 'silenced') {
-      if (!isInTriggerTime) return { ...item, status: 'inactive' };
-    } else if (item.status === 'active') {
-      if (isInTriggerTime) return { ...item, status: 'ringing' };
-    }
-  }
+  const timeDiff = triggerDate.valueOf() - nowInMs - reminderBeforeInMs;
+  const isInTriggerTime = timeDiff <= 0 && timeDiff >= -alarmToleranceInMs;
 
-  return item;
+  if (item.status === 'ringing' && !isInTriggerTime)
+    return {
+      ...item,
+      status: item.type === 'alarmRepeat' ? 'active' : 'inactive',
+    };
+  else if (item.status === 'missed' && isInTriggerTime) return { ...item, status: 'inactive' };
+  else if (item.status === 'silenced' && !isInTriggerTime) return { ...item, status: 'inactive' };
+  else if (item.status === 'active' && isInTriggerTime) return { ...item, status: 'ringing' };
+  else return item;
 }
