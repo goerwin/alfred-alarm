@@ -1,6 +1,7 @@
 import shell from 'shelljs';
 import path from 'path';
 import childProcess from 'child_process';
+import { getData, setData } from './helpers';
 
 export function showNotification(message: string, title = 'Alarm') {
   shell.exec(
@@ -18,6 +19,28 @@ export function killProcessesWithPPIDEqualToPID(pid: number) {
   shell.exec(`pkill -P ${pid}`);
 }
 
+export function triggerAlarm(title: string, alarmFilePath?: string) {
+  return childProcess.fork(path.resolve(__dirname, 'triggerAlarm.js'), {
+    env: { ...process.env, title, alarmFilePath },
+  });
+}
+
+// It will create an independent process with a new group
+// process id (detach) parent will spin it and forget it
+function createDetachedIndependentProcess(
+  scriptAbsPath: string,
+  env: Record<string, any>
+) {
+  const childProcessEl = childProcess.fork(scriptAbsPath, {
+    env,
+    detached: true,
+    stdio: ['ignore', 'ignore', 'ignore', 'ipc'],
+  });
+  childProcessEl.unref();
+  childProcessEl.disconnect();
+  return childProcessEl;
+}
+
 function getProcessEnvVariables(pid: number) {
   return shell.exec(`ps eww ${pid}`, { silent: true });
 }
@@ -28,8 +51,35 @@ export function isFamilyProcess(pid: number) {
   return envVars.match(/isAlfredAlarmProcess=([\w]*)/)?.[1] === 'true';
 }
 
-export function triggerAlarm(title: string, alarmFilePath: string) {
-  return childProcess.fork(path.resolve(__dirname, 'triggerAlarm.js'), {
-    env: { ...process.env, title, alarmFilePath },
+export function getBgProcess() {
+  const { bgProcess } = getData();
+  const bgProcessPid = bgProcess?.pid;
+
+  if (!bgProcessPid) return null;
+  if (isFamilyProcess(bgProcessPid)) return bgProcess;
+
+  return null;
+}
+
+export function startBgProcess() {
+  if (getBgProcess()) return;
+
+  const indProcess = createDetachedIndependentProcess(
+    path.resolve(__dirname, 'background.js'),
+    { ...process.env, isAlfredAlarmProcess: true }
+  );
+
+  if (!indProcess.pid) return;
+
+  setData({
+    ...getData(),
+    bgProcess: { pid: indProcess.pid, startDate: new Date() },
   });
+}
+
+export function stopBgProcess() {
+  const { pid } = getBgProcess() ?? {};
+  if (pid) killProcessesWithSameGPIDAsPID(pid);
+  const data = getData();
+  setData({ ...data, bgProcess: undefined });
 }
