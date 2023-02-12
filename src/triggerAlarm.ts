@@ -1,12 +1,12 @@
-const path = require('path');
-const shell = require('shelljs');
-const helpersProcess = require('./helpersProcess');
+import path from 'path';
+import shell from 'shelljs';
+import * as helpersProcess from './helpers/helpersProcess';
 
 const alarmFilePath = process.env.alarmFilePath
-  ? path.resolve(process.env.alarmFilePath.replace(/^~/, process.env.HOME))
+  ? path.resolve(process.env.alarmFilePath.replace(/^~/, process.env.HOME ?? ''))
   : '';
 
-helpersProcess.showNotification(process.env.title);
+helpersProcess.showNotification(process.env.title ?? '');
 
 // Gotta be async so that if the main process is killed,
 // this can exit as well.

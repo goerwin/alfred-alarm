@@ -1,0 +1,12 @@
+{
+  "singleQuote": true,
+  "printWidth": 100,
+  "overrides": [
+    {
+      "files": "*.test.ts",
+      "options": {
+        "printWidth": 160
+      }
+    }
+  ]
+}

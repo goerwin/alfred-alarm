@@ -4,53 +4,142 @@
   "alarmFilePath": "~/My Drive/Alfred/Alfred.alfredpreferences/workflows/user.workflow.BB989380-994D-4BE0-A548-403D629D08F7/resources/greatFairysFountainZeldaOOT.mp3",
   "items": [
     {
-      "id": 1668447289396,
-      "title": "Convera Globant",
+      "id": "6de8a780-3a28-40c6-96a6-8bf760005637",
+      "title": "Alarm",
+      "createdAt": "2023-02-12T17:19:47.343Z",
+      "type": "alarmRepeat",
       "status": "active",
-      "onRepeat": true,
-      "startDate": "2022-11-14T17:34:49.396Z",
-      "endDate": "2022-11-15T16:00:00.000Z",
-      "hrsMinsFormatted": "11:00AM",
-      "hours": 11,
-      "minutes": 0,
-      "isoDays": [
-        2
-      ],
-      "strDays": [
-        "Tue"
-      ],
-      "daysFormatted": "Tue"
+      "isoHours": 2,
+      "isoMinutes": 0,
+      "isoWeekDays": [
+        2,
+        3,
+        4,
+        1
+      ]
     },
     {
-      "id": 1668447268650,
-      "title": "Convera daily",
+      "id": "aeb63065-8d05-4049-83b0-fce99e55198b",
+      "title": "bb",
+      "createdAt": "2023-02-12T17:19:28.000Z",
+      "type": "alarmRepeat",
       "status": "active",
-      "onRepeat": true,
-      "startDate": "2022-11-14T17:34:28.650Z",
-      "endDate": "2022-11-14T19:00:00.000Z",
-      "hrsMinsFormatted": "2:00PM",
-      "hours": 14,
-      "minutes": 0,
-      "isoDays": [
+      "isoHours": 2,
+      "isoMinutes": 0,
+      "isoWeekDays": [
+        2,
+        3,
+        4
+      ]
+    },
+    {
+      "id": "161a8dfc-adb6-4fab-a4f9-977848a7596b",
+      "title": "Alarm",
+      "createdAt": "2023-02-11T15:26:39.116Z",
+      "type": "alarmOneTime",
+      "status": "inactive",
+      "isoHours": 17,
+      "isoMinutes": 30
+    },
+    {
+      "id": "3e7a9fc2-6f96-47b2-b0f0-e16a67746fa2",
+      "title": "Convera daily",
+      "createdAt": "2023-02-11T15:19:46.151Z",
+      "type": "alarmRepeat",
+      "status": "active",
+      "isoHours": 19,
+      "isoMinutes": 0,
+      "isoWeekDays": [
         1,
         2,
         3,
         4,
         5
-      ],
-      "strDays": [
-        "Mon",
-        "Tue",
-        "Wed",
-        "Thu",
-        "Fri"
-      ],
-      "daysFormatted": "Mon, Tue, Wed, Thu, Fri"
+      ]
+    },
+    {
+      "id": "162070cb-8a34-4dc3-bf26-aace191f9726",
+      "title": "Convera",
+      "createdAt": "2023-02-11T15:19:42.420Z",
+      "type": "alarmRepeat",
+      "status": "active",
+      "isoHours": 16,
+      "isoMinutes": 0,
+      "isoWeekDays": [
+        2
+      ]
+    },
+    {
+      "id": "1676099631734",
+      "title": "Alarm",
+      "createdAt": "2023-02-11T07:13:51.734Z",
+      "type": "alarmOneTime",
+      "status": "inactive",
+      "isoHours": 20,
+      "isoMinutes": 0
+    },
+    {
+      "id": "1675447070287",
+      "title": "Alarm",
+      "createdAt": "2023-02-03T17:57:50.287Z",
+      "pid": 57586,
+      "type": "alarmOneTime",
+      "status": "inactive",
+      "isoHours": 18,
+      "isoMinutes": 30
+    },
+    {
+      "id": "1675197756930",
+      "title": "Alarm",
+      "createdAt": "2023-01-31T20:42:36.930Z",
+      "pid": 12744,
+      "type": "alarmOneTime",
+      "status": "inactive",
+      "isoHours": 16,
+      "isoMinutes": 0
+    },
+    {
+      "id": "1673998758574",
+      "title": "Alarm",
+      "createdAt": "2023-01-17T23:39:18.574Z",
+      "pid": 83502,
+      "type": "alarmOneTime",
+      "status": "inactive",
+      "isoHours": 17,
+      "isoMinutes": 0
+    },
+    {
+      "id": "1673889104863",
+      "title": "Alarm",
+      "createdAt": "2023-01-16T17:11:44.863Z",
+      "pid": 60743,
+      "type": "alarmOneTime",
+      "status": "inactive",
+      "isoHours": 20,
+      "isoMinutes": 30
+    },
+    {
+      "id": "1673630031720",
+      "title": "Alarm",
+      "createdAt": "2023-01-13T17:13:51.720Z",
+      "pid": 78407,
+      "type": "alarmOneTime",
+      "status": "inactive",
+      "isoHours": 19,
+      "isoMinutes": 30
+    },
+    {
+      "id": "1669741282949",
+      "title": "Alarm",
+      "createdAt": "2022-11-29T17:01:22.949Z",
+      "type": "alarmOneTime",
+      "status": "inactive",
+      "isoHours": 18,
+      "isoMinutes": 0
     }
   ],
   "bgProcess": {
-    "pid": 60053,
-    "startDate": "2022-11-14T17:50:43.596Z",
-    "startDateFormatted": "Mon Nov 14 2022, 12:50:43 PM"
+    "pid": 15459,
+    "createdAt": "2023-02-12T19:22:27.672Z"
   }
 }
