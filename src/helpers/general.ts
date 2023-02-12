@@ -163,7 +163,6 @@ export function getNextStateItem(
   const { alarmToleranceInMs, reminderBeforeInMs } = options;
   const nowInMs = new Date(now).valueOf();
 
-  // TODO:
   if (item.type === 'timer') {
     const status = item.status;
     const timerCreatedAt = new Date(item.createdAt);

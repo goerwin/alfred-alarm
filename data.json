@@ -4,14 +4,6 @@
   "alarmFilePath": "~/My Drive/Alfred/Alfred.alfredpreferences/workflows/user.workflow.BB989380-994D-4BE0-A548-403D629D08F7/resources/greatFairysFountainZeldaOOT.mp3",
   "items": [
     {
-      "id": "920a8c1a-625b-4571-827b-d0dd320029eb",
-      "title": "test",
-      "createdAt": "2023-02-12T19:20:05.878Z",
-      "type": "timer",
-      "status": "active",
-      "minutes": 2
-    },
-    {
       "id": "6de8a780-3a28-40c6-96a6-8bf760005637",
       "title": "Alarm",
       "createdAt": "2023-02-12T17:19:47.343Z",
@@ -147,7 +139,7 @@
     }
   ],
   "bgProcess": {
-    "pid": 2338,
-    "createdAt": "2023-02-12T17:15:51.075Z"
+    "pid": 15459,
+    "createdAt": "2023-02-12T19:22:27.672Z"
   }
 }
