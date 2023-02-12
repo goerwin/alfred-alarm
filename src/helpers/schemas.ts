@@ -21,20 +21,19 @@ const TimerSchema = CommonDataItemSchema.extend({
 const AlarmOneTimeSchema = CommonDataItemSchema.extend({
   type: z.literal('alarmOneTime'),
   status: statusesSchema,
-  hours: hoursSchema,
-  minutes: minutesSchema,
+  isoHours: hoursSchema,
+  isoMinutes: minutesSchema,
 });
 
 const AlarmRepeatSchema = AlarmOneTimeSchema.extend({
   type: z.literal('alarmRepeat'),
   status: statusesSchema.exclude(['missed']),
   isoWeekDays: z.array(z.number().min(0).max(6)).nonempty(),
-  hours: hoursSchema,
-  minutes: minutesSchema,
 });
 
 export const DataSchema = z.object({
   alarmReminderInMins: z.number().optional(),
+  alarmToleranceInMins: z.number().optional(),
   maxItems: z.number().optional(),
   alarmFilePath: z.string().optional(),
   items: z.array(z.union([TimerSchema, AlarmOneTimeSchema, AlarmRepeatSchema])),

@@ -218,7 +218,7 @@
 				<string>Loading...</string>
 				<key>script</key>
 				<string>nodePath="${nodePath/#\~/$HOME}"
-"$nodePath" dist/scripts/sfItemsOptions.js $1</string>
+"$nodePath" dist/alfredScripts/sfItemsOptions.js $1</string>
 				<key>scriptargtype</key>
 				<integer>1</integer>
 				<key>scriptfile</key>
@@ -275,7 +275,7 @@
 				<string>Loading...</string>
 				<key>script</key>
 				<string>nodePath="${nodePath/#\~/$HOME}"
-"$nodePath" dist/scripts/sfTimerOptions.js $1</string>
+"$nodePath" dist/alfredScripts/sfTimerOptions.js $1</string>
 				<key>scriptargtype</key>
 				<integer>1</integer>
 				<key>scriptfile</key>
@@ -325,7 +325,7 @@
 				<string>Loading...</string>
 				<key>script</key>
 				<string>nodePath="${nodePath/#\~/$HOME}"
-"$nodePath" dist/scripts/sfBackgroundOptions.js</string>
+"$nodePath" dist/alfredScripts/sfBackgroundOptions.js</string>
 				<key>scriptargtype</key>
 				<integer>1</integer>
 				<key>scriptfile</key>
@@ -355,7 +355,7 @@
 				<integer>102</integer>
 				<key>script</key>
 				<string>nodePath="${nodePath/#\~/$HOME}"
-"$nodePath" scripts/sIndexActions.js $1</string>
+"$nodePath" dist/alfredScripts/sIndexActions.js $1</string>
 				<key>scriptargtype</key>
 				<integer>1</integer>
 				<key>scriptfile</key>

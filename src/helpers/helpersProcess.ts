@@ -20,7 +20,7 @@ export function killProcessesWithPPIDEqualToPID(pid: number) {
 }
 
 export function triggerAlarm(title: string, alarmFilePath?: string) {
-  return childProcess.fork(path.resolve(__dirname, 'triggerAlarm.js'), {
+  return childProcess.fork(path.resolve(__dirname, '../triggerAlarm.js'), {
     env: { ...process.env, title, alarmFilePath },
   });
 }
@@ -65,7 +65,7 @@ export function startBgProcess() {
   if (getBgProcess()) return;
 
   const indProcess = createDetachedIndependentProcess(
-    path.resolve(__dirname, 'background.js'),
+    path.resolve(__dirname, '../', 'background.js'),
     { ...process.env, isAlfredAlarmProcess: true }
   );
 

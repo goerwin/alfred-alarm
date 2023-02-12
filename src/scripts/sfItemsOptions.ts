@@ -1,10 +1,9 @@
 import {
   getData,
   getWeekDaysInfo,
-  getWeekDaysStr,
   getNextTriggerDate,
   outputAlfredItems,
-  getWeekDaysInputStrFromWeekDays,
+  getWeekDaysStr,
 } from '../helpers/general';
 import { timeDiffByDates, getHoursMinsInfo } from 'goerwin-helpers/universal/time';
 import { startBgProcess } from '../helpers/helpersProcess';
@@ -15,95 +14,13 @@ import {
 } from '../helpers/helpersAlarm';
 import { AlfredItem, NewAlarmOrTimerAttrs } from '../helpers/schemas';
 
-const now = new Date();
-const userTimezoneOffsetInMins = now.getTimezoneOffset();
-
-// TODO: this should be handled by package
-function getHoursMinsImprovedFormatted(hours: number, minutes: number) {
-  return getHoursMinsInfo(`${hours}:${minutes.toFixed().padStart(2, '0')}`)?.hrsMinsFormatted ?? '';
-}
-
-function getWeekDaysFormattedForAlfredItem(weekDays: [number, ...number[]]) {
-  const sortedWeekDays = [...weekDays] satisfies [number, ...number[]];
-  return ` 🔃 ${getWeekDaysStr(sortedWeekDays.sort()).join(', ')}`;
-}
-
-function getMatchStr(
-  type: string,
-  hours: number,
-  mins: number,
-  hrsMinsFormatted: string,
-  ...rest: string[]
-) {
-  const strMins = String(mins).padStart(2, '0');
-  const m1 = `${hrsMinsFormatted} ${hrsMinsFormatted.replace(/:/g, '')}`;
-  const m2 = `${hrsMinsFormatted} ${hrsMinsFormatted.replace(/:00/g, '')}`;
-  return `${type}: ${m1} ${m2} ${hours}:${strMins} ${hours}${strMins} ${rest.join(' ')}`;
-}
-
-function getOffsetWeekdaysTimeInfo(attrs: {
-  weekDaysStr: string;
-  hours: number;
-  minutes: number;
-  timezoneOffsetInMins: number;
-}): {
-  offsetHours: number;
-  offsetMinutes: number;
-  offsetWeekDays?: [number, ...number[]];
-  offsetWeekDaysFormatted?: string;
-  noOffsetHours: number;
-  noOffsetMinutes: number;
-  noOffsetWeekDays?: [number, ...number[]];
-  noOffsetWeekDaysFormatted?: string;
-} {
-  const { hours, minutes, weekDaysStr, timezoneOffsetInMins } = attrs;
-
-  const offsetWeekDaysInfo = getWeekDaysInfo(weekDaysStr, { hours, minutes, timezoneOffsetInMins });
-
-  if (offsetWeekDaysInfo) {
-    const noOffsetWeekDaysInfo = getWeekDaysInfo(weekDaysStr, {
-      hours,
-      minutes,
-      timezoneOffsetInMins: 0,
-    });
-
-    if (!noOffsetWeekDaysInfo) throw new Error('unexpected');
-
-    return {
-      offsetHours: offsetWeekDaysInfo.hours,
-      offsetMinutes: offsetWeekDaysInfo.minutes,
-      offsetWeekDays: offsetWeekDaysInfo.weekDays,
-      offsetWeekDaysFormatted: getWeekDaysFormattedForAlfredItem(offsetWeekDaysInfo.weekDays),
-      noOffsetHours: noOffsetWeekDaysInfo.hours,
-      noOffsetMinutes: noOffsetWeekDaysInfo.minutes,
-      noOffsetWeekDays: noOffsetWeekDaysInfo.weekDays,
-      noOffsetWeekDaysFormatted: getWeekDaysFormattedForAlfredItem(noOffsetWeekDaysInfo.weekDays),
-    };
-  }
-
-  const userDate = new Date();
-
-  userDate.setHours(hours);
-  userDate.setMinutes(minutes);
-
-  const offsetUserDateValue = userDate.valueOf() + timezoneOffsetInMins * 60 * 1000;
-  const offsetUserDate = new Date(offsetUserDateValue);
-
-  return {
-    offsetHours: offsetUserDate.getHours(),
-    offsetMinutes: offsetUserDate.getMinutes(),
-    noOffsetHours: hours,
-    noOffsetMinutes: minutes,
-  };
-}
-
 function getNewAlfredItem(processArgv: string[]): AlfredItem {
   const timeInput = processArgv[2];
-  const weekDaysStr = processArgv[3] || '';
+  const weekdays = processArgv[3] || '';
   const title = processArgv.slice(4).join(' ') || '';
-  const userHoursMinsInfo = getHoursMinsInfo(timeInput || '');
+  const hoursMinsInfo = getHoursMinsInfo(timeInput || '');
 
-  if (!userHoursMinsInfo)
+  if (!hoursMinsInfo)
     return {
       valid: false,
       title: 'Ups!',
@@ -111,40 +28,34 @@ function getNewAlfredItem(processArgv: string[]): AlfredItem {
         'Invalid syntax! (egs. "425pm" or "1625 walk dog" or "2pm 34 this will repeat on wed/thu")',
     };
 
-  const { hours, minutes, hrsMinsFormatted } = userHoursMinsInfo;
-  const {
-    offsetHours,
-    offsetMinutes,
-    offsetWeekDays,
-    noOffsetWeekDaysFormatted: inputWeekDaysFormatted,
-  } = getOffsetWeekdaysTimeInfo({
-    weekDaysStr,
-    hours,
-    minutes,
-    timezoneOffsetInMins: userTimezoneOffsetInMins,
-  });
+  const { hours, minutes, hrsMinsFormatted } = hoursMinsInfo;
+
+  const isoWeekDays = getWeekDaysInfo(weekdays);
+  const weekDaysFormatted = isoWeekDays
+    ? `🔃 ${getWeekDaysStr(isoWeekDays.weekDays).join(', ')}`
+    : '';
 
   let newTitle = title ? title : 'Alarm';
-  newTitle = offsetWeekDays
+  newTitle = isoWeekDays
     ? `${newTitle}`
-    : weekDaysStr
+    : weekdays
     ? title
-      ? `${weekDaysStr} ${newTitle}`
-      : weekDaysStr
+      ? `${weekdays} ${newTitle}`
+      : weekdays
     : newTitle;
 
   const newAlarmItem: NewAlarmOrTimerAttrs = {
     createdAt: new Date().toISOString(),
-    isoHours: offsetHours,
-    isoMinutes: offsetMinutes,
+    isoHours: hours,
+    isoMinutes: minutes,
     title: newTitle,
-    ...(offsetWeekDays
-      ? { type: 'alarmRepeat', isoWeekDays: offsetWeekDays }
+    ...(isoWeekDays
+      ? { type: 'alarmRepeat', isoWeekDays: isoWeekDays.weekDays }
       : { type: 'alarmOneTime' }),
   };
 
   return {
-    title: `New Alarm - ${hrsMinsFormatted} ${inputWeekDaysFormatted || ''}`,
+    title: `New Alarm - ${hrsMinsFormatted} ${weekDaysFormatted}`,
     subtitle: `"${newTitle}" at ${hrsMinsFormatted}`,
     variables: { action: 'create', item: JSON.stringify(newAlarmItem) },
   };
@@ -183,31 +94,23 @@ function getAlfredItems(): AlfredItem[] {
         if (type === 'timer') {
           title = `Timer: ${item.minutes} minute${item.minutes !== 1 ? 's' : ''}`;
           match = `${title} ${item.title}`;
-        } else if (type === 'alarmRepeat' || type === 'alarmOneTime') {
-          const {
-            offsetHours,
-            offsetMinutes,
-            offsetWeekDaysFormatted = '',
-          } = getOffsetWeekdaysTimeInfo({
-            weekDaysStr: getWeekDaysInputStrFromWeekDays(
-              type === 'alarmRepeat' ? item.isoWeekDays : undefined
-            ),
-            hours: item.isoHours,
-            minutes: item.isoMinutes,
-            timezoneOffsetInMins: -userTimezoneOffsetInMins,
-          });
+        } else {
+          const localHours = triggerDate.getHours();
+          const localMins = triggerDate.getMinutes();
+          const hrsMinsFormatted =
+            getHoursMinsInfo(`${localHours}:${localMins.toFixed().padStart(2, '0')}`)
+              ?.hrsMinsFormatted ?? '';
 
-          const hrsMinsFormatted = getHoursMinsImprovedFormatted(offsetHours, offsetMinutes);
+          const daysFormattedStr =
+            type === 'alarmRepeat'
+              ? ` 🔃 ${getWeekDaysInfo(item.isoWeekDays.join(''))?.strIsoWeekDays.join(', ')}`
+              : '';
+          title = `Alarm: ${hrsMinsFormatted}${daysFormattedStr}`;
+          const strMins = String(localMins).padStart(2, '0');
+          const m1 = `${hrsMinsFormatted} ${hrsMinsFormatted.replace(/:/g, '')}`;
+          const m2 = `${hrsMinsFormatted} ${hrsMinsFormatted.replace(/:00/g, '')}`;
 
-          title = `Alarm: ${hrsMinsFormatted}${offsetWeekDaysFormatted}`;
-          match = getMatchStr(
-            'Alarm',
-            offsetHours,
-            offsetMinutes,
-            hrsMinsFormatted,
-            offsetWeekDaysFormatted,
-            item.title
-          );
+          match = `Alarm: ${m1} ${m2} ${localHours}:${strMins} ${localHours}${strMins} ${daysFormattedStr} ${item.title}`;
         }
 
         if (status === 'active') {
@@ -238,8 +141,8 @@ function getAlfredItems(): AlfredItem[] {
         };
       })
       .sort((a, b) => {
-        if (a.status === 'ringing' || a.status === 'silenced') return -1;
-        if (b.status === 'ringing' || b.status === 'silenced') return 1;
+        if (a.status === 'ringing') return -1;
+        if (b.status === 'ringing') return 1;
 
         if (a.status === 'active' && a.status === b.status)
           return a.triggerDate === b.triggerDate ? 0 : a.triggerDate < b.triggerDate ? -1 : 1;

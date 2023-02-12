@@ -19,12 +19,9 @@ if (action === 'createTimer') {
     title,
     createdAt: new Date().toISOString(),
   } satisfies NewAlarmOrTimerAttrs);
-}
-
-if (action === 'cancelOrRestartOrSilence') cancelOrRestartOrSilenceAlarm(process.argv[2]);
-if (action === 'silenceAll') silenceAllAlarms();
-if (action === 'cancelAll') cancelAllAlarms();
-if (action === 'removeAll') removeAllAlarms();
-if (action === 'stopBgProcess') stopBgProcess();
-
-startBgProcess();
+} else if (action === 'cancelOrRestartOrSilence') cancelOrRestartOrSilenceAlarm(process.argv[2]);
+else if (action === 'silenceAll') silenceAllAlarms();
+else if (action === 'cancelAll') cancelAllAlarms();
+else if (action === 'removeAll') removeAllAlarms();
+else if (action === 'stopBgProcess') stopBgProcess();
+else startBgProcess();
