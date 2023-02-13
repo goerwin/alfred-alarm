@@ -1,7 +1,7 @@
 {
   "scripts": {
     "dev": "tsc --watch",
-    "build": "tsc",
+    "build": "rm -rf dist && tsc",
     "test": "jest"
   },
   "dependencies": {
