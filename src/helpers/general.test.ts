@@ -125,7 +125,6 @@ describe(`${getNextStateItem.name}`, () => {
   const [ringingTimer, ringingTimerCopy] = alarmItemGenerator({ type: 'timer', status: 'ringing', timerMinutes: 10 });
   const [silencedTimer, silencedTimerCopy] = alarmItemGenerator({ type: 'timer', status: 'silenced', timerMinutes: 10 });
 
-  // TODO: add cases timer
   it('should return same alarm item with object equality and same values', () => {
     (
       [
@@ -254,6 +253,11 @@ describe(`${getNextStateItem.name}`, () => {
         [ringingRepeatAlarm, '2022-11-20T07:01:00.001Z', 60000, 0, 'active'],
         [ringingRepeatAlarm, '2022-11-21T07:01:00.000Z', 60000, 0, 'active'],
         [ringingRepeatAlarm, '2022-11-22T07:01:00.000Z', 60000, 0, 'active'],
+
+        [silencedRepeatAlarm, '2022-11-20T06:59:59.999Z', 60000, 0, 'active'],
+        [silencedRepeatAlarm, '2022-11-20T07:00:00.000Z', 60000, 0, 'silenced'],
+        [silencedRepeatAlarm, '2022-11-20T07:01:00.000Z', 60000, 0, 'silenced'],
+        [silencedRepeatAlarm, '2022-11-20T07:01:00.001Z', 60000, 0, 'active'],
       ] as const
     ).forEach((el) => expect(getNextStateItem(el[0], el[1], { alarmToleranceInMs: el[2], reminderBeforeInMs: el[3] })).toEqual({ ...el[0], status: el[4] }));
   });

@@ -190,14 +190,17 @@ export function getNextStateItem(
 
   const timeDiff = triggerDate.valueOf() - nowInMs - reminderBeforeInMs;
   const isInTriggerTime = timeDiff <= 0 && timeDiff >= -alarmToleranceInMs;
+  const { status } = item;
 
-  if (item.status === 'ringing' && !isInTriggerTime)
+  if (status === 'ringing' && !isInTriggerTime)
     return {
       ...item,
       status: item.type === 'alarmRepeat' ? 'active' : 'inactive',
     };
-  else if (item.status === 'missed' && isInTriggerTime) return { ...item, status: 'inactive' };
-  else if (item.status === 'silenced' && !isInTriggerTime) return { ...item, status: 'inactive' };
-  else if (item.status === 'active' && isInTriggerTime) return { ...item, status: 'ringing' };
+  else if (status === 'missed' && isInTriggerTime) return { ...item, status: 'inactive' };
+  else if (status === 'silenced' && !isInTriggerTime && item.type === 'alarmRepeat')
+    return { ...item, status: 'active' };
+  else if (status === 'silenced' && !isInTriggerTime) return { ...item, status: 'inactive' };
+  else if (status === 'active' && isInTriggerTime) return { ...item, status: 'ringing' };
   else return item;
 }
