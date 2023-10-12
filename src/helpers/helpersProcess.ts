@@ -4,9 +4,7 @@ import childProcess from 'child_process';
 import { getData, setData } from './general';
 
 export function showNotification(message: string, title = 'Alarm') {
-  shell.exec(
-    `osascript -e 'display notification "${message}" with title "${title}"'`
-  );
+  shell.exec(`osascript -e 'display notification "${message}" with title "${title}"'`);
 }
 
 export function killProcessesWithSameGPIDAsPID(pid: number) {
@@ -19,18 +17,15 @@ export function killProcessesWithPPIDEqualToPID(pid: number) {
   shell.exec(`pkill -P ${pid}`);
 }
 
-export function triggerAlarm(title: string, alarmFilePath?: string) {
+export function triggerAlarm(title: string) {
   return childProcess.fork(path.resolve(__dirname, '../triggerAlarm.js'), {
-    env: { ...process.env, title, alarmFilePath },
+    env: { ...process.env, title },
   });
 }
 
 // It will create an independent process with a new group
 // process id (detach) parent will spin it and forget it
-function createDetachedIndependentProcess(
-  scriptAbsPath: string,
-  env: Record<string, any>
-) {
+function createDetachedIndependentProcess(scriptAbsPath: string, env: Record<string, any>) {
   const childProcessEl = childProcess.fork(scriptAbsPath, {
     env,
     detached: true,

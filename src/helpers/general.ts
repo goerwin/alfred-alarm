@@ -2,19 +2,17 @@ import fs from 'fs-extra';
 import path from 'path';
 import { AlfredItem, Data, DataItem, DataSchema } from './schemas';
 
-function getDataPath() {
-  if (!process.env.dataFilePath) throw new Error('environment variable "dataFilePath" not defined');
-  return path.resolve(process.env.dataFilePath.replace(/^~/, process.env['HOME'] || ''));
-}
+export const DATA_PATH = path.resolve(__dirname, '../../data.json');
+export const ALARM_PATH = path.resolve(__dirname, '../../resources/greatFairysFountainZeldaOOT.mp3');
 
 export function getData() {
-  const data = fs.readFileSync(getDataPath(), { encoding: 'utf8' });
+  const data = fs.readFileSync(DATA_PATH, { encoding: 'utf8' });
   if (data) return DataSchema.parse(JSON.parse(data));
   return { bgProcess: undefined, items: [] };
 }
 
 export function setData(newData: Data) {
-  fs.writeFileSync(getDataPath(), JSON.stringify(DataSchema.parse(newData), null, 2), {
+  fs.writeFileSync(DATA_PATH, JSON.stringify(DataSchema.parse(newData), null, 2), {
     encoding: 'utf8',
   });
 }

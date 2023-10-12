@@ -25,7 +25,7 @@ async function main(attrs: { loopDelayInMs: number }) {
       if (item.pid && isAlarmProcessRunning && newItem.status !== 'ringing') {
         helpersProcess.killProcessesWithPPIDEqualToPID(item.pid);
       } else if (!isAlarmProcessRunning && newItem.status === 'ringing') {
-        const childProcessEl = helpersProcess.triggerAlarm(item.title, data.alarmFilePath);
+        const childProcessEl = helpersProcess.triggerAlarm(item.title);
         newItem.pid = childProcessEl.pid;
         updateData = true;
       }

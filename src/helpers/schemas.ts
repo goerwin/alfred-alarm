@@ -35,7 +35,6 @@ export const DataSchema = z.object({
   alarmReminderInMins: z.number().optional(),
   alarmToleranceInMins: z.number().optional(),
   maxItems: z.number().optional(),
-  alarmFilePath: z.string().optional(),
   items: z.array(z.union([TimerSchema, AlarmOneTimeSchema, AlarmRepeatSchema])),
   bgProcess: z.object({ pid: z.number(), createdAt: z.string().datetime() }).optional(),
 });

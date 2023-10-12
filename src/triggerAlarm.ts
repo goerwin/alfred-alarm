@@ -1,10 +1,9 @@
 import path from 'path';
 import shell from 'shelljs';
 import * as helpersProcess from './helpers/helpersProcess';
+import { getAlarmPath } from './helpers/general';
 
-const alarmFilePath = process.env.alarmFilePath
-  ? path.resolve(process.env.alarmFilePath.replace(/^~/, process.env.HOME ?? ''))
-  : '';
+const alarmFilePath = getAlarmPath()
 
 helpersProcess.showNotification(process.env.title ?? '');
 

@@ -217,8 +217,7 @@
 				<key>runningsubtext</key>
 				<string>Loading...</string>
 				<key>script</key>
-				<string>nodePath="${nodePath/#\~/$HOME}"
-"$nodePath" dist/alfredScripts/sfItemsOptions.js $1</string>
+				<string>node dist/alfredScripts/sfItemsOptions.js $1</string>
 				<key>scriptargtype</key>
 				<integer>1</integer>
 				<key>scriptfile</key>
@@ -274,8 +273,7 @@
 				<key>runningsubtext</key>
 				<string>Loading...</string>
 				<key>script</key>
-				<string>nodePath="${nodePath/#\~/$HOME}"
-"$nodePath" dist/alfredScripts/sfTimerOptions.js $1</string>
+				<string>node dist/alfredScripts/sfTimerOptions.js $1</string>
 				<key>scriptargtype</key>
 				<integer>1</integer>
 				<key>scriptfile</key>
@@ -324,8 +322,7 @@
 				<key>runningsubtext</key>
 				<string>Loading...</string>
 				<key>script</key>
-				<string>nodePath="${nodePath/#\~/$HOME}"
-"$nodePath" dist/alfredScripts/sfBackgroundOptions.js</string>
+				<string>node dist/alfredScripts/sfBackgroundOptions.js</string>
 				<key>scriptargtype</key>
 				<integer>1</integer>
 				<key>scriptfile</key>
@@ -354,8 +351,7 @@
 				<key>escaping</key>
 				<integer>102</integer>
 				<key>script</key>
-				<string>nodePath="${nodePath/#\~/$HOME}"
-"$nodePath" dist/alfredScripts/sIndexActions.js $1</string>
+				<string>node dist/alfredScripts/sIndexActions.js $1</string>
 				<key>scriptargtype</key>
 				<integer>1</integer>
 				<key>scriptfile</key>
@@ -535,10 +531,7 @@
 		</dict>
 	</array>
 	<key>readme</key>
-	<string>Create alarms and timers
-
-* nodePath: absolute path to node exec (eg. /usr/bin/node)
-* dataFilePath: absolute path to file where alarm data is saved</string>
+	<string>Create alarms and timers</string>
 	<key>uidata</key>
 	<dict>
 		<key>081D824C-741C-49F2-A5E2-13FF7C7BAB6E</key>
@@ -635,18 +628,6 @@
 	</dict>
 	<key>userconfigurationconfig</key>
 	<array/>
-	<key>variables</key>
-	<dict>
-		<key>dataFilePath</key>
-		<string>~/My Drive/Alfred/Alfred.alfredpreferences/workflows/user.workflow.BB989380-994D-4BE0-A548-403D629D08F7/data.json</string>
-		<key>nodePath</key>
-		<string>~/.nvm/versions/node/v16.6.1/bin/node</string>
-	</dict>
-	<key>variablesdontexport</key>
-	<array>
-		<string>dataFilePath</string>
-		<string>nodePath</string>
-	</array>
 	<key>version</key>
 	<string></string>
 	<key>webaddress</key>
